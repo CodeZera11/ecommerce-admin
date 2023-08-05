@@ -22,9 +22,5 @@ export default function SetupPage() {
         return null;
     }
 
-    return (
-        <>
-            <div>Root Page</div>
-        </>
-    )
+    return null;
 }
