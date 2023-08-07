@@ -14,6 +14,17 @@ model Store {
    id       String    @id @default(auto()) @map("_id") @db.ObjectId
    userId   String
    name     String
+   billboards Billboard[]
    createdAt  DateTime @default(now())
    updatedAt  DateTime @updatedAt
+}
+
+model Billboard {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  storeId   String
+  store     Store     @relation(fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
