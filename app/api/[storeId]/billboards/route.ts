@@ -67,19 +67,13 @@ export async function GET(
   }
 ) {
   try {
-    const { userId } = auth();
-
-    if (!userId) {
-      return NextResponse.json("Unauthenticated", { status: 401 });
-    }
-
     if (!params.storeId) {
       return NextResponse.json("Store Id is required", { status: 400 });
     }
 
     const billboards = await prisma.billboard.findMany({
       where: {
-        id: params.storeId,
+        storeId: params.storeId,
       },
     });
 
