@@ -15,16 +15,29 @@ model Store {
    userId   String
    name     String
    billboards Billboard[]
+   categories Category[]
    createdAt  DateTime @default(now())
    updatedAt  DateTime @updatedAt
 }
 
 model Billboard {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  storeId   String
+  storeId   String @db.ObjectId
   store     Store     @relation(fields: [storeId], references: [id])
   label     String
   imageUrl  String
+  category  Category[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  storeId      String   @db.ObjectId
+  store        Store    @relation(fields: [storeId], references: [id])
+  billboardId  String   @db.ObjectId
+  billboard    Billboard @relation(fields: [billboardId], references: [id])
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

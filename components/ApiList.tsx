@@ -24,7 +24,7 @@ const ApiList: React.FC<ApiListProps> = ({
     return (
         <div>
             <div className='mb-5'>
-                <Heading title='API' description='API calls for Billboards' />
+                <Heading title='API' description={`API calls for ${name}`} />
             </div>
             <Separator className='mb-4' />
 

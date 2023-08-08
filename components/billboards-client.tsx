@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { Separator } from "./ui/separator";
 import { useParams, useRouter } from "next/navigation";
-import { Billboard } from "@prisma/client";
 import { DataTable } from "./data-table";
 import { BillboardColumns, columns } from "@/app/(dashboard)/[storeId]/(routes)/billboards/columns";
 

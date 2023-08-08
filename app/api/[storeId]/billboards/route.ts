@@ -40,7 +40,7 @@ export async function POST(
     });
 
     if (!storeByUserId) {
-      return NextResponse.json("Unauthorized", { status: 403 });
+      return NextResponse.json("Unauthorized", { status: 405 });
     }
 
     const billboard = await prisma.billboard.create({
