@@ -13,6 +13,7 @@ interface BillboardsClientProps {
 }
 
 const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
+    const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
 
     const router = useRouter();
     const params = useParams();
