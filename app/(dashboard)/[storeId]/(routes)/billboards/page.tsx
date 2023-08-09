@@ -10,7 +10,6 @@ const BillboardsPage = async (
     }
 ) => {
 
-
     const billboards = await prisma.billboard.findMany({
         where: {
             storeId: params.storeId

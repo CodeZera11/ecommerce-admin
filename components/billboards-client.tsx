@@ -12,8 +12,7 @@ interface BillboardsClientProps {
     data: BillboardColumns[];
 }
 
-const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
-    const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
+const BillboardsClient: React.FC<BillboardsClientProps> = ({ data }) => {
 
     const router = useRouter();
     const params = useParams();
@@ -33,4 +32,4 @@ const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
     )
 }
 
-export default SizesClient
+export default BillboardsClient

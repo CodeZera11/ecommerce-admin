@@ -4,6 +4,7 @@ import { ProductColumns } from './columns'
 import { format } from "date-fns"
 import ApiList from '@/components/ApiList'
 import ProductsClient from '@/components/product-client'
+import { formatter } from '@/lib/utils'
 
 const ProductsPage = async (
     { params }: {
@@ -30,7 +31,7 @@ const ProductsPage = async (
     const formattedProducts: ProductColumns[] = products.map((item) => ({
         id: item.id,
         name: item.name,
-        price: item.price.toString(),
+        price: formatter.format(item.price).toString(),
         category: item.category.name,
         size: item.size.name,
         color: item.color.value,

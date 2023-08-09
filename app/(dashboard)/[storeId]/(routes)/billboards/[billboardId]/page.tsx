@@ -18,9 +18,6 @@ const BillboardPage = async (
         })
     }
 
-
-
-
     return (
         <>
             <div className="flex-col">
