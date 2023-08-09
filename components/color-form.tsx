@@ -8,7 +8,7 @@ import { Separator } from "./ui/separator";
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import axios from "axios";
@@ -16,7 +16,7 @@ import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AlertModal } from "./modals/alert-modal";
 
-interface SizeFormProps {
+interface ColorFormProps {
     initialData: Size | null;
 }
 
@@ -26,7 +26,7 @@ const formSchema = z.object({
 })
 
 
-const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
+const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
 
     const title = initialData ? "Edit Color" : "Create Color"
     const description = initialData ? "Edit a Color" : "Add a new Color"
@@ -50,13 +50,13 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         try {
             setLoading(true)
             if (initialData) {
-                await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, values)
+                await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`, values)
             } else {
-                await axios.post(`/api/${params.storeId}/sizes`, values)
+                await axios.post(`/api/${params.storeId}/colors`, values)
             }
             router.refresh();
             toast.success(toastMessage)
-            router.push(`/${params.storeId}/sizes`)
+            router.push(`/${params.storeId}/colors`)
         } catch (error) {
             toast.error("Something went wrong!")
         } finally {
@@ -67,12 +67,12 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`)
+            await axios.delete(`/api/${params.storeId}/colors/${params.colorsId}`)
             router.refresh()
-            router.push(`/${params.storeId}/sizes`)
+            router.push(`/${params.storeId}/colors`)
             toast.success("Size deleted.")
         } catch (error) {
-            toast.error("Make sure to removed all products using this size.")
+            toast.error("Make sure to removed all products using this color.")
         } finally {
             setLoading(false)
             setOpen(false)
@@ -107,7 +107,7 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                     <FormItem>
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
-                                            <Input disabled={loading} placeholder="Enter size name" {...field} />
+                                            <Input disabled={loading} placeholder="Enter color name" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -120,7 +120,7 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                                     <FormItem>
                                         <FormLabel>Value</FormLabel>
                                         <FormControl>
-                                            <Input disabled={loading} placeholder="Enter size value" {...field} />
+                                            <Input disabled={loading} placeholder="Enter color value" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -136,4 +136,4 @@ const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
     )
 }
 
-export default SizeForm
+export default ColorForm
