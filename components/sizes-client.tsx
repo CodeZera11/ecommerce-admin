@@ -6,13 +6,13 @@ import { Plus } from 'lucide-react'
 import { Separator } from "./ui/separator";
 import { useParams, useRouter } from "next/navigation";
 import { DataTable } from "./data-table";
-import { BillboardColumns, columns } from "@/app/(dashboard)/[storeId]/(routes)/billboards/columns";
+import { SizeColumns, columns } from "@/app/(dashboard)/[storeId]/(routes)/sizes/columns";
 
-interface BillboardsClientProps {
-    data: BillboardColumns[];
+interface SizesClientProps {
+    data: SizeColumns[];
 }
 
-const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
+const SizesClient: React.FC<SizesClientProps> = ({ data }) => {
 
     const router = useRouter();
     const params = useParams();
@@ -20,14 +20,14 @@ const SizesClient: React.FC<BillboardsClientProps> = ({ data }) => {
     return (
         <>
             <div className="flex items-center justify-between">
-                <Heading title={`Billboards (${data.length})`} description='Manage your billboards from here' />
-                <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
+                <Heading title={`Sizes (${data.length})`} description='Manage your sizes from here' />
+                <Button onClick={() => router.push(`/${params.storeId}/sizes/new`)}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add New
                 </Button>
             </div>
             <Separator />
-            <DataTable searchType={"label"} columns={columns} data={data} />
+            <DataTable searchType={"name"} columns={columns} data={data} />
         </>
     )
 }
