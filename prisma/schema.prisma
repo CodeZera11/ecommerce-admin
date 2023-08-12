@@ -29,7 +29,7 @@ model Billboard {
   storeId   String @db.ObjectId
   store     Store     @relation(fields: [storeId], references: [id])
   label     String
-  imageUrl  String
+  images    Image[]
   category  Category[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -91,8 +91,10 @@ model Product {
 
 model Image {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
-  productId  String @db.ObjectId
-  product    Product @relation(fields: [productId], references: [id], onDelete:Cascade)
+  productId  String? @db.ObjectId
+  product    Product? @relation(fields: [productId], references: [id], onDelete:Cascade)
+  billboardId String? @db.ObjectId
+  billboard   Billboard? @relation(fields: [billboardId], references: [id], onDelete:Cascade)
   url        String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

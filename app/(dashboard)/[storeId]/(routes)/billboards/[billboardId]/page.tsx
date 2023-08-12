@@ -14,6 +14,9 @@ const BillboardPage = async (
         billboard = await prisma.billboard.findUnique({
             where: {
                 id: params.billboardId
+            },
+            include: {
+                images: true
             }
         })
     }

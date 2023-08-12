@@ -14,6 +14,9 @@ const BillboardsPage = async (
         where: {
             storeId: params.storeId
         },
+        include: {
+            images: true
+        },
         orderBy: {
             createdAt: 'desc'
         }

@@ -14,7 +14,7 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { label, imageUrl } = body;
+    const { label, images } = body;
 
     if (!userId) {
       return NextResponse.json("Unauthenticated!", { status: 401 });
@@ -24,8 +24,8 @@ export async function POST(
       return NextResponse.json("Label is required!", { status: 400 });
     }
 
-    if (!imageUrl) {
-      return NextResponse.json("Image Url is Required!", { status: 400 });
+    if (!images || images.length === 0) {
+      return NextResponse.json("Images are Required!", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -46,8 +46,12 @@ export async function POST(
     const billboard = await prisma.billboard.create({
       data: {
         label,
-        imageUrl,
         storeId: params.storeId,
+        images: {
+          createMany: {
+            data: [...images.map((image: { url: string }) => image)],
+          },
+        },
       },
     });
 
@@ -74,6 +78,9 @@ export async function GET(
     const billboards = await prisma.billboard.findMany({
       where: {
         storeId: params.storeId,
+      },
+      include: {
+        images: true,
       },
     });
 

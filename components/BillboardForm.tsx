@@ -1,6 +1,6 @@
 "use client";
 
-import { Billboard } from "@prisma/client";
+import { Billboard, Image } from "@prisma/client";
 import Heading from "./Heading";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
@@ -18,12 +18,14 @@ import { AlertModal } from "./modals/alert-modal";
 import ImageUpload from "./image-upload";
 
 interface BillboardFormProps {
-    initialData: Billboard | null;
+    initialData?: Billboard & {
+        image?: Image[]
+    } | null;
 }
 
 const formSchema = z.object({
     label: z.string().min(1),
-    imageUrl: z.string().min(1)
+    images: z.object({ url: z.string() }).array(),
 })
 
 
@@ -39,12 +41,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
     const params = useParams();
     const router = useRouter();
 
+    const defaultValues = initialData ? {
+        ...initialData,
+    } : {
+        label: '',
+        images: [],
+    }
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData || {
-            label: "",
-            imageUrl: ""
-        }
+        defaultValues
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -101,16 +107,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                             control={form.control}
-                            name="imageUrl"
+                            name="images"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Background Image</FormLabel>
+                                    <FormLabel>Background Images</FormLabel>
                                     <FormControl>
                                         <ImageUpload
-                                            value={field.value ? [field.value] : []}
+                                            value={field.value.map((image) => image.url)}
                                             disabled={loading}
-                                            onChange={(url) => field.onChange(url)}
-                                            onRemove={() => field.onChange("")}
+                                            onChange={(url) => field.onChange([...field.value, { url }])}
+                                            onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                                         />
                                     </FormControl>
                                     <FormMessage />

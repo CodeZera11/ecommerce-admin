@@ -14,6 +14,9 @@ export async function GET(
       where: {
         id: params.billboardId,
       },
+      include: {
+        images: true,
+      },
     });
 
     return NextResponse.json(billboard, { status: 200 });
@@ -30,7 +33,7 @@ export async function PATCH(
   try {
     const { userId } = auth();
 
-    const { imageUrl, label } = await req.json();
+    const { images, label } = await req.json();
 
     if (!userId) {
       return NextResponse.json("Unauthenticated!", { status: 401 });
@@ -40,8 +43,8 @@ export async function PATCH(
       return NextResponse.json("Label is required!", { status: 400 });
     }
 
-    if (!imageUrl) {
-      return NextResponse.json("Image Url is Required!", { status: 400 });
+    if (!images || !images.length) {
+      return NextResponse.json("Images are Required!", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -63,14 +66,28 @@ export async function PATCH(
       return NextResponse.json("Unauthorized", { status: 400 });
     }
 
-    const billboard = await prisma?.billboard.updateMany({
+    await prisma?.billboard.update({
       where: {
         id: params.billboardId,
-        storeId: params.storeId,
       },
       data: {
         label,
-        imageUrl,
+        images: {
+          deleteMany: {},
+        },
+      },
+    });
+
+    const billboard = await prisma?.billboard.update({
+      where: {
+        id: params.billboardId,
+      },
+      data: {
+        images: {
+          createMany: {
+            data: [...images.map((image: { url: string }) => image)],
+          },
+        },
       },
     });
 
